@@ -34,20 +34,24 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
-                <tr>
-                    <td><input type="checkbox" name="user_ids[]" value="{{ $user->id }}"></td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->status }}</td>
-                    <td>
-                        <a href="{{ route('users.destroy', ['id' => $user->id, '_method' => 'DELETE']) }}"
-                            class="btn btn-danger btn-sm"
-                            onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
-                        <a href="{{ route('users.change.status', $user->id) }}" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to change status for this user?')">Change Status</a>
-                    </td>
-                </tr>
-                @endforeach
+            @foreach ($users as $user)
+<tr>
+            <td><input type="checkbox" name="user_ids[]" value="{{ $user->id }}"></td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td>{{ $user->status }}</td>
+            <td>
+                <a href="{{ route('users.destroy', ['id' => $user->id, '_method' => 'DELETE']) }}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                
+                <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                
+                <a href="{{ route('users.change.status', $user->id) }}" class="btn btn-success btn-sm"
+                    onclick="return confirm('Are you sure you want to change status for this user?')">Change Status</a>
+            </td>
+</tr>
+@endforeach
             </tbody>
         </table>
     </form>

@@ -38,5 +38,7 @@ Route::patch('/users/{id}/update-role', [AdminDashboardController::class, 'updat
 Route::get('/users/{id}/change-status', [AdminDashboardController::class, 'changeStatus'])->name('users.change.status');
 Route::get('/users/{id}', [AdminDashboardController::class, 'destroy'])->name('users.destroy');
 Route::post('/users/bulk-actions', [AdminDashboardController::class, 'bulkActions'])->name('users.bulk.actions');
+Route::get('users/{id}/edit', [AdminDashboardController::class, 'edit'])->name('users.edit');
+Route::put('users/{id}', [AdminDashboardController::class, 'update'])->name('users.update');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
