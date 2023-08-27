@@ -39,5 +39,4 @@ Route::get('/users/{id}/change-status', [AdminDashboardController::class, 'chang
 Route::get('/users/{id}', [AdminDashboardController::class, 'destroy'])->name('users.destroy');
 Route::post('/users/bulk-actions', [AdminDashboardController::class, 'bulkActions'])->name('users.bulk.actions');
 
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');

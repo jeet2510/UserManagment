@@ -57,6 +57,12 @@ class AdminDashboardController extends Controller
         } elseif ($action === 'bulkDelete') {
             User::whereIn('id', $request->user_ids)->delete();
             return redirect()->route('users.index')->with('success', 'Users deleted successfully.');
+        } elseif ($action === 'searchUser') {
+            $search = $request->input('search');
+            $users = User::where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%")
+                        ->get();
+            return view('users.index', ['users' => $users]);
         }
         return redirect()->back()->with('success', 'Bulk action completed successfully.');
     }

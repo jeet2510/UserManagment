@@ -11,6 +11,11 @@
     <form id="bulkActionForm" method="post" action="{{ route('users.bulk.actions') }}">
         @csrf
         
+        <div class="input-group mb-3">
+            <input type="text" name="search" class="form-control" placeholder="Search by name or email">
+            <button type="submit" name="action" value="searchUser" class="btn btn-primary">Search</button>
+        </div>
+        
         <button type="submit" name="action" value="changeStatus" class="btn btn-primary mb-2">Change Selected Status</button>
         
         <button type="submit" name="action" value="bulkDelete" class="btn btn-danger mb-2">Delete Selected</button>
@@ -44,13 +49,4 @@
         </table>
     </form>
 </div>
-
-<script>
-    document.getElementById('select-all').addEventListener('click', function () {
-        let checkboxes = document.querySelectorAll('input[name="user_ids[]"]');
-        for (let checkbox of checkboxes) {
-            checkbox.checked = this.checked;
-        }
-    });
-</script>
 @endsection
