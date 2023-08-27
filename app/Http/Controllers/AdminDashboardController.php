@@ -1,16 +1,19 @@
-<?php 
-namespace App\Http\Controllers; 
+<?php
+
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use App\Models\User;
 
 class AdminDashboardController extends Controller
 {
-        public function index()
+    public function index(Request $request)
     {
-        $users = User::where('role','user')->get();
+        $sort = $request->input('sort', 'id'); 
+        $users = User::orderBy($sort)
+                ->where('role', 'user')
+                ->paginate(10);
+
         return view('users.index', compact('users'));
     }
 
@@ -24,11 +27,7 @@ class AdminDashboardController extends Controller
     public function changeStatus($id)
     {
         $user = User::findOrFail($id);
-        if ($user->status == 'active'){
-            $user->update(['status' => 'inactive']);
-        }else{
-            $user->update(['status' => 'active']);
-        }
+        $user->update(['status' => $user->status === 'active' ? 'inactive' : 'active']);
         return redirect()->route('users.index')->with('success', 'User status changed successfully.');
     }
 
@@ -43,15 +42,9 @@ class AdminDashboardController extends Controller
         $action = $request->input('action');
 
         if ($action === 'changeStatus') {
-            
             foreach ($request->user_ids as $userId) {
                 $user = User::findOrFail($userId);
-    
-                if ($user->status == 'active'){
-                    $user->update(['status' => 'inactive']);
-                }else{
-                    $user->update(['status' => 'active']);
-                }
+                $user->update(['status' => $user->status === 'active' ? 'inactive' : 'active']);
             }
             return redirect()->route('users.index')->with('success', 'Users status changed successfully.');
         } elseif ($action === 'bulkDelete') {
@@ -61,10 +54,9 @@ class AdminDashboardController extends Controller
             $search = $request->input('search');
             $users = User::where('name', 'like', "%$search%")
                         ->orWhere('email', 'like', "%$search%")
-                        ->get();
-            return view('users.index', ['users' => $users]);
+                        ->paginate(10); 
+            return view('users.index', compact('users'));
         }
         return redirect()->back()->with('success', 'Bulk action completed successfully.');
     }
-    
 }
